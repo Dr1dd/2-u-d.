@@ -107,3 +107,69 @@ void Skaitymas(std::vector<Studentai> &StudentuInfo){
 	fd.close();
 }
 }
+void Generuoti(int n){
+	std::stringstream ss;
+	ss << n;
+	std::string pav= ss.str() + ".txt";
+	std::string pav1= ss.str() +"islaike.txt";
+	std::string pav2= ss.str()+ "neislaike.txt";
+	std::ofstream fr(pav);
+	std::ofstream fr1(pav1);
+	std::ofstream fr2(pav2);
+	std::string lname;
+	std::string fname;
+	std::string N1;
+	double suma = 0;
+	int egzrez;
+	int pazymys;
+	double vidurkis;
+	double galutinis;
+	for(int i = 0; i <= n; i++){
+		if(i == 0){
+			fr1 << std::right << std::setw(23) << "Islaike" << std::endl; 
+			fr1 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
+			fr1 <<std::endl;
+		    fr2 << std::right << std::setw(23) << "Neislaike" << std::endl; 
+		    fr2 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
+			fr2 <<std::endl;
+			fr << std::left<< std::setw(14) << "Pavarde" << std::left << std::setw(14) << "Vardas";
+			for(int y = 1; y <=101; y++) {
+			N1 = "N";
+			N1+= std::to_string(y);
+			if(y != 101) fr << std::left << std::setw(7) << N1;
+				else fr << std::left << std::setw(13) << "Egzaminas" << std::endl;
+			}
+		}
+		else{
+			suma = 0;
+			lname = "Pavarde";
+			lname+= std::to_string(i);
+			fname = "Vardas";
+			fname+= std::to_string(i);
+			fr <<std::left << std::setw(14) << lname << std::left << std::setw(14) <<fname;
+			for(int j = 1; j <= 101; j++){
+				if(j != 101){
+					pazymys = 1+rand()%10;
+					fr << std::left << std::setw(7) << pazymys;
+					suma += pazymys;
+				}
+				else {
+					egzrez = 1+rand()%10;
+				fr << std::left << std::setw(13) << egzrez << std::endl;	
+				}
+			
+			}
+		vidurkis = suma /100;
+		galutinis = 0.4*vidurkis + 0.6*egzrez;
+		if(galutinis >= 5){
+			fr1 << std::left << std::setw(13) << lname << std::left << std::setw(13) << fname << std::left << std::setw(7) << galutinis << std::endl;
+		}
+		else{
+			fr2 << std::left << std::setw(13) << lname << std::left << std::setw(13) << fname << std::left << std::setw(7) << galutinis << std::endl;
+		}
+		}
+	}
+	fr.close();
+	fr1.close();
+	fr2.close();
+}

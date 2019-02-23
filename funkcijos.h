@@ -16,6 +16,6 @@ std::string Tikrinti(std::string tekstas);
 double TikrintiSkaicius(std::string tekstas);
 void Skaitymas(std::vector<Studentai> &StudentuInfo);
 bool Lyginimas(const Studentai &a, const Studentai &b);
-
+void Generuoti(int n);
 
 #endif

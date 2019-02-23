@@ -6,11 +6,13 @@
 #include <algorithm>
 #include <cctype>
 #include <fstream>
+#include <cmath>
 #include "funkcijos.h"
 
 int main(){
 	srand(time(NULL));
 	std::string pradinis;
+	std::string generate;
 	std::vector<Studentai> StudentuInfo;
 	std::cout << "Skaitymas is failo ar ivestis? (1 = Skaitymas, 0=Ivestis)" << std::endl;
 	std::cin >> pradinis;
@@ -19,8 +21,21 @@ int main(){
 			std::cin >> pradinis;
 		}
 	if(pradinis == "1"){
+		std::cout <<"Ar norite generuoti tekstinius failus? (taip ar ne)" << std::endl;
+		std::cin >> generate;
+		while(generate != "taip" && generate!="ne"){
+			std::cout<<"Ivestis neteisinga, bandykite dar karta ivesdami taip arba ne" << std::endl;
+			std::cin >> generate;
+		}
+		if(generate == "taip"){
+			for(int z = 1;z <= 5; z++){
+				Generuoti(std::round(pow(10, z)));
+			}
+		}
+		if(generate == "ne"){
 			Skaitymas(StudentuInfo);
-			Spausdinti(StudentuInfo);
+			Spausdinti(StudentuInfo);		
+		}
 		}
 	else{
 	int studSkaic;
