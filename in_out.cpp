@@ -55,7 +55,7 @@ void Spausdinti(std::vector<Studentai> Studentai){
 	}
 
 }
-void Skaitymas(std::vector<Studentai> &StudentuInfo){
+void Skaitymas(std::vector<Studentai> &StudentuInfo, std::string pav){
 	std::string a;
 	std::string b;
 	int skaicius = 0;
@@ -70,7 +70,7 @@ void Skaitymas(std::vector<Studentai> &StudentuInfo){
 	int suma = 0;
 	
 	std::ifstream fd;
-	fd.open("kursiokai.txt");
+	fd.open(pav);
 	if (!fd.is_open())
     {
        std::cout <<"Nepavyko atidaryti failo" << std::endl;

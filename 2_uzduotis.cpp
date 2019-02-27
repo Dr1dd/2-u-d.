@@ -7,9 +7,11 @@
 #include <cctype>
 #include <fstream>
 #include <cmath>
+#include <chrono>
 #include "funkcijos.h"
 
 int main(){
+	auto start = std::chrono::high_resolution_clock::now();
 	srand(time(NULL));
 	std::string pradinis;
 	std::string generate;
@@ -28,12 +30,27 @@ int main(){
 			std::cin >> generate;
 		}
 		if(generate == "taip"){
+			if(fileExists("10.txt") && fileExists("10neislaike.txt")){
+				std::string pav;
+				std::cout << "Failai jau egzistuoja" << std::endl;
+				std::cout << "Pradedami skaitymai is failu" << std::endl;
+				for(int i = 1; i <= 5; i++){
+				std::stringstream ss;
+            	ss << std::round(pow(10, i));
+	            std::string pav= ss.str() + ".txt";
+	            std::cout << pav << std::endl;
+					Skaitymas(StudentuInfo, pav);
+				}
+			}
+			else{
 			for(int z = 1;z <= 5; z++){
 				Generuoti(std::round(pow(10, z)));
 			}
+			}
+				
 		}
 		if(generate == "ne"){
-			Skaitymas(StudentuInfo);
+			Skaitymas(StudentuInfo, "kursiokai.txt");
 			Spausdinti(StudentuInfo);		
 		}
 		}
@@ -68,6 +85,9 @@ int main(){
 }
 	Spausdinti(StudentuInfo, tipas, studSkaic);
 }
+auto end = std::chrono::high_resolution_clock::now(); 
+std::chrono::duration<double> diff = end-start;
+std::cout << "Programos laikas: " << diff.count() << " s." << std::endl;
 	return 0;
 }
 

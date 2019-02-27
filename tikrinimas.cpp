@@ -66,3 +66,7 @@ bool Lyginimas(const Studentai &a, const Studentai &b)
 {
     return a.lname < b.lname;
 }
+bool fileExists(const std::string& filename) {
+  std::ifstream ifile(filename.c_str());
+  return (bool)ifile;
+}
