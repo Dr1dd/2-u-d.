@@ -50,7 +50,7 @@ Studentai Informacija(){
 		std::cout<<"Ivestis neteisinga, bandykite dar karta: (Iveskite Taip arba Ne)" << std::endl;
 		std::cin >> generuoti;
    }
-    	if(generuoti == "Taip"){
+    	if(generuoti == "Taip" || generuoti == "taip"){
     	 gen = true;
     	for(int i =1;i <=n; i++){
     		randomSkaic = 1+rand()%10;
