@@ -48,8 +48,9 @@ void list(){
         std::cout << "Skaitymo laikas: " << diff.count() << " s." << std::endl;
             } else {
                 for (int z = 1; z <= 5; z++) {
-                    Generuoti(std::round(pow(10, z)));
-                }
+                    Generuoti(StudentuInfo, std::round(pow(10, z)));
+                StudentuInfo.clear();
+				}
             }
 
         }
@@ -142,7 +143,6 @@ void SkaitymasList(std::list<Studentai> &StudentuInfo, std::string pav){
 		if(a == "Egzaminas") break;
 	}
 	ndSkaic = elSkaic - 3;
-	//fd.ignore(1000, '\n');
 	for(int i = 0; i < skaicius-1; i++){
 		for(int j = 0; j < elSkaic; j++){
 			fd >> b;
@@ -164,4 +164,163 @@ void SkaitymasList(std::list<Studentai> &StudentuInfo, std::string pav){
 	fd.close();
 }
 }
+void Generuoti(std::list<Studentai> &StudentuInfo, int n){
+	StudentuInfo.clear();
+	std::string lname;
+	std::string fname;
+	Studentai Stud;
+	double suma = 0;
+	int egzrez;
+	int pazymys;
+	double vidurkis;
+	double galutinis;
+	for(int i = 1; i <= n; i++){
+			suma = 0;
+			lname = "Pavarde";
+			lname+= std::to_string(i);
+			Stud.lname = lname;
+			fname = "Vardas";
+			fname+= std::to_string(i);
+			Stud.fname = fname;
+			Stud.ND.reserve(35);
+			for(int j = 0; j <= 30; j++){
+					pazymys = 1+rand()%10;
+					Stud.ND.push_back(pazymys);
+					suma += pazymys;
+			}
+			egzrez = Stud.ND[30];
+		vidurkis = suma /100;
+		galutinis = 0.4*vidurkis + 0.6*egzrez;
+		Stud.egzGal = galutinis;
+		StudentuInfo.push_back(Stud);
+		Stud.ND.clear();
+	}
+	FailuIrasymas(StudentuInfo, n);
+}
+void FailuIrasymas(std::list<Studentai> &StudentuInfo, int n){
+		std::stringstream ss;
+	ss << n;
+	std::string pav= ss.str() + ".txt";
+	std::ofstream fr(pav);
+	std::string N1;
+	std::list<Studentai>::iterator it;
+	int  i = 0;
+	for(it = StudentuInfo.begin(); it != StudentuInfo.end(); it++){
+		if(i == 0){
+			fr << std::left<< std::setw(14) << "Pavarde" << std::left << std::setw(14) << "Vardas";
+			for(int y = 1; y <=31; y++) {
+			N1 = "N";
+			N1+= std::to_string(y);
+			if(y != 31) fr << std::left << std::setw(7) << N1;
+				else fr << std::left << std::setw(13) << "Egzaminas" << std::endl;
+			}
+			i++;
+		}
+			fr <<std::left << std::setw(14) << it->lname << std::left << std::setw(14) <<it->fname;
+			for(int j = 0; j <= 30; j++){
+				if(j != 30) fr << std::left << std::setw(7) << it->ND[j];
+				else fr << std::left << std::setw(13) << it->ND[j] << std::endl;
+				}
+			
+		}
+		int strat;
+		std::cout << "Pasirinkite rusiavimo strategija: 1- pirma, 2 - antra" << std::endl;
+		std::cin >> strat;
+		while(strat != 1 && strat != 2){
+			std::cout << "Ivestis neteisinga, bandykite is naujo irasydami arba 1 arba 2" << std::endl;
+			std::cin >> strat;
+		}
+		if(strat == 1){
+		auto start = std::chrono::high_resolution_clock::now();
+     	ListRusiavimas1strat(StudentuInfo, n);
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> diff = end - start;
+        std::cout << n << " Studentu rusiavimo laikas: " << diff.count() << " s." << std::endl;	
+		}
+		else {
+		auto start1 = std::chrono::high_resolution_clock::now();
+     	ListRusiavimas2strat(StudentuInfo, n);
+        auto end1 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> diff1 = end1 - start1;
+        std::cout << n << " Studentu rusiavimo laikas: " << diff1.count() << " s." << std::endl;		
+		}
+ fr.close();
+
+}
+void ListRusiavimas1strat(std::list<Studentai> &StudentuInfo, int n){
+	std::stringstream ss;
+	ss << n;
+	std::string pav1= ss.str() +"islaike.txt";
+	std::string pav2= ss.str()+ "neislaike.txt";
+	std::list<Studentai> neislaike;
+	std::list<Studentai> islaike;
+	std::ofstream fr1(pav1);
+	std::ofstream fr2(pav2);
+	int i = 0;
+		for(std::list<Studentai>::iterator it = StudentuInfo.begin(); it != StudentuInfo.end(); it++){
+		if(i == 0){
+			fr1 << std::right << std::setw(23) << "Islaike" << std::endl; 
+			fr1 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
+			fr1 <<std::endl;
+		    fr2 << std::right << std::setw(23) << "Neislaike" << std::endl; 
+		    fr2 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
+			fr2 <<std::endl;
+		i++;
+		}
+		if(it->egzGal >= 5)	islaike.push_back(*it);
+		if(it->egzGal < 5) neislaike.push_back(*it);
+	}
+	int dydis1 = islaike.size();
+	int dydis2 = neislaike.size();
+	for(std::list<Studentai>::iterator it1 = islaike.begin(); it1 != islaike.end(); ++it1){
+		fr1 << std::left << std::setw(13) << it1->lname << std::left << std::setw(13) << it1->fname << std::left << std::setw(7) << it1->egzGal << std::endl;
+	}
+		for(std::list<Studentai>::iterator it2 = neislaike.begin(); it2 != neislaike.end(); ++it2){
+		fr2 << std::left << std::setw(13) << it2->lname << std::left << std::setw(13) << it2->fname << std::left << std::setw(7) << it2->egzGal << std::endl;
+	}
+	fr1.close();
+	fr2.close();
+}
+void ListRusiavimas2strat(std::list<Studentai> &StudentuInfo, int n){
+	std::stringstream ss;
+	ss << n;
+	std::string pav1= ss.str() +"islaike.txt";
+	std::string pav2= ss.str()+ "neislaike.txt";
+	std::list<Studentai> neislaike;
+	std::ofstream fr1(pav1);
+	std::ofstream fr2(pav2);
+			fr1 << std::right << std::setw(23) << "Islaike" << std::endl; 
+			fr1 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
+			fr1 <<std::endl;
+		    fr2 << std::right << std::setw(23) << "Neislaike" << std::endl; 
+		    fr2 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
+			fr2 <<std::endl;
+std::list<Studentai>::iterator it =StudentuInfo.begin();
+while(it != StudentuInfo.end()){
+		if(it->egzGal < 5){
+			if(it->fname == "") break;
+			 neislaike.push_back(*it);
+}
+
+it++;
+	}
+	std::list<Studentai>::iterator it1 =StudentuInfo.begin();
+	while(it1 !=StudentuInfo.end()){
+		if(it1->egzGal <5){
+			if(it1->fname == "") break;
+		    it1 = StudentuInfo.erase(it1);
+		}	
+		else it1++;
+}
+	for(std::list<Studentai>::iterator it1 = StudentuInfo.begin(); it1 !=StudentuInfo.end(); it1++){
+		fr1 << std::left << std::setw(13) << it1->lname << std::left << std::setw(13) << it1->fname << std::left << std::setw(7) << it1->egzGal << std::endl;
+	}
+		for(std::list<Studentai>::iterator it2 = neislaike.begin(); it2 != neislaike.end(); it2++){
+		fr2 << std::left << std::setw(13) << it2->lname << std::left << std::setw(13) << it2->fname << std::left << std::setw(7) << it2->egzGal << std::endl;
+	}
+	fr1.close();
+	fr2.close();
+}
+
+
 
