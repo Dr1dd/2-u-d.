@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <cctype>
+#include <random>
 #include <fstream>
 #include "funkcijos.h"
 

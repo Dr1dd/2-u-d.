@@ -3,13 +3,17 @@
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include <chrono>
 #include <algorithm>
 #include <cctype>
+#include <random>
 #include <fstream>
 #include "funkcijos.h"
 
-
 Studentai Informacija(){
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::mt19937 genseed(seed);
+	std::uniform_int_distribution<std::mt19937::result_type> genSK (1, 10);
 	std::string vardas, pavarde;
 	int n =0;
 	double galutinis;
@@ -53,7 +57,7 @@ Studentai Informacija(){
     	if(generuoti == "Taip" || generuoti == "taip"){
     	 gen = true;
     	for(int i =1;i <=n; i++){
-    		randomSkaic = 1+rand()%10;
+    		randomSkaic = genSK(genseed);
     	 Stud.ND.push_back(randomSkaic);
     	 suma = suma + randomSkaic;
     }
@@ -91,7 +95,7 @@ Studentai Informacija(){
 	}
 	int egzas = 0;
 	if(gen == true){
-		egzas = 1+rand()%10;
+		egzas = genSK(genseed);
 	if(p>0)vidurkis = (double)suma/p;
 	else vidurkis = (double)suma/n;
 	galutinis = 0.4 * vidurkis + 0.6*egzas;

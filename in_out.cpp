@@ -4,8 +4,10 @@
 #include <sstream>
 #include <vector>
 #include <list>
+#include <chrono>
 #include <algorithm>
 #include <cctype>
+#include <random>
 #include <fstream>
 #include <iterator>
 #include "funkcijos.h"
@@ -110,6 +112,9 @@ void Skaitymas(std::vector<Studentai> &StudentuInfo, std::string pav){
 }
 }
 void Generuoti(int n){
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::mt19937 gen(seed);
+	std::uniform_int_distribution<std::mt19937::result_type> genSK (1, 10);
 	std::stringstream ss;
 	ss << n;
 	std::string pav= ss.str() + ".txt";
@@ -151,12 +156,12 @@ void Generuoti(int n){
 			fr <<std::left << std::setw(14) << lname << std::left << std::setw(14) <<fname;
 			for(int j = 1; j <= 101; j++){
 				if(j != 101){
-					pazymys = 1+rand()%10;
+					pazymys = genSK(gen);
 					fr << std::left << std::setw(7) << pazymys;
 					suma += pazymys;
 				}
 				else {
-					egzrez = 1+rand()%10;
+					egzrez = genSK(gen);
 				fr << std::left << std::setw(13) << egzrez << std::endl;	
 				}
 			

@@ -7,12 +7,12 @@
 #include <cctype>
 #include <fstream>
 #include <cmath>
+#include <random>
 #include <chrono>
 #include <list>
 #include "funkcijos.h"
 
 int main(){
-	srand(time(NULL));
 	int tipas;
 	std::cout << "Ar norite naudoti vectorius, list'us ar deque's? Pasirinkite atitinkamai (0- vector, 1 - list, 2 - deque)" << std::endl;
 	std::cin >> tipas;

@@ -7,6 +7,7 @@
 #include <cctype>
 #include <fstream>
 #include <cmath>
+#include <random>
 #include <chrono>
 #include <list>
 #include "funkcijos.h"
@@ -165,6 +166,9 @@ void SkaitymasList(std::list<Studentai> &StudentuInfo, std::string pav){
 }
 }
 void Generuoti(std::list<Studentai> &StudentuInfo, int n){
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::mt19937 gen(seed);
+	std::uniform_int_distribution<std::mt19937::result_type> genSK (1, 10);
 	StudentuInfo.clear();
 	std::string lname;
 	std::string fname;
@@ -184,7 +188,7 @@ void Generuoti(std::list<Studentai> &StudentuInfo, int n){
 			Stud.fname = fname;
 			Stud.ND.reserve(35);
 			for(int j = 0; j <= 30; j++){
-					pazymys = 1+rand()%10;
+					pazymys = genSK(gen);
 					Stud.ND.push_back(pazymys);
 					suma += pazymys;
 			}

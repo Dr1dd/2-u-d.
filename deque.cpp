@@ -7,11 +7,12 @@
 #include <cctype>
 #include <fstream>
 #include <cmath>
+#include <random>
 #include <chrono>
 #include <deque>
 #include "funkcijos.h"
-void deque(){
 
+void deque(){
 	std::string pradinis;
 	std::string generate;
 	std::cout << "Pasirinkta deque konteineriai" << std::endl;
@@ -169,6 +170,9 @@ void SpausdintiDeque(std::deque <Studentai> &StudentuInfo){
 	}
 }
 void Generuoti(std::deque<Studentai> StudentuInfo, int n){
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	std::mt19937 gen(seed);
+	std::uniform_int_distribution<std::mt19937::result_type> genSK (1, 10);
 	StudentuInfo.clear();
 	std::string lname;
 	std::string fname;
@@ -188,7 +192,7 @@ void Generuoti(std::deque<Studentai> StudentuInfo, int n){
 			Stud.fname = fname;
 			Stud.ND.reserve(35);
 			for(int j = 0; j <= 30; j++){
-					pazymys = 1+rand()%10;
+					pazymys = genSK(gen);
 					Stud.ND.push_back(pazymys);
 					suma += pazymys;
 			}
@@ -291,29 +295,37 @@ void DequeRusiavimas2strat(std::deque<Studentai> StudentuInfo, int n){
 	std::deque<Studentai> neislaike;
 	std::ofstream fr1(pav1);
 	std::ofstream fr2(pav2);
-		for(int i = 0; i <= n; i++){
-		if(i == 0){
 			fr1 << std::right << std::setw(23) << "Islaike" << std::endl; 
 			fr1 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
 			fr1 <<std::endl;
 		    fr2 << std::right << std::setw(23) << "Neislaike" << std::endl; 
 		    fr2 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
 			fr2 <<std::endl;
-	 }
-	 else{
-		if(StudentuInfo[i].egzGal < 5){
-			if(StudentuInfo[i].fname == "") break;
-			neislaike.push_back(StudentuInfo[i]);
-			StudentuInfo.erase(StudentuInfo.begin()+i);
 
-		}
+	 StudentuInfo.erase(StudentuInfo.begin());
+std::deque<Studentai>::iterator it =StudentuInfo.begin();
+while(it != StudentuInfo.end()){
+		if(it->egzGal < 5){
+			if(it->fname == "") break;
+			 neislaike.push_back(*it);
+}
+
+it++;
 	}
-	}
+	std::deque<Studentai>::iterator it1 =StudentuInfo.begin();
+	while(it1 !=StudentuInfo.end()){
+		if(it1->egzGal <5){
+			if(it1->fname == "") break;
+		    it1 = StudentuInfo.erase(it1);
+		}	
+		else it1++;
+}
+	
 	StudentuInfo.shrink_to_fit();
 	neislaike.shrink_to_fit();
 	int dydis1 = StudentuInfo.size();
 	int dydis2 = neislaike.size();
-	for(int j = 1; j< dydis1; j++){
+	for(int j = 0; j< dydis1; j++){
 		fr1 << std::left << std::setw(13) << StudentuInfo[j].lname << std::left << std::setw(13) << StudentuInfo[j].fname << std::left << std::setw(7) << StudentuInfo[j].egzGal << std::endl;
 	}
 		for(int j1 = 0; j1< dydis2; j1++){
