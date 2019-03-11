@@ -191,25 +191,24 @@ void VectorRusiavimas1strat(std::vector<Studentai> StudentuInfo, int n){
 	ss << n;
 	std::string pav1= ss.str() +"islaike.txt";
 	std::string pav2= ss.str()+ "neislaike.txt";
-	std::vector<Studentai> neislaike;
-	std::vector<Studentai> islaike;
+	std::vector<Studentai> neislaike (StudentuInfo.size());
+	std::vector<Studentai> islaike (StudentuInfo.size());
 	std::ofstream fr1(pav1);
 	std::ofstream fr2(pav2);
-		for(int i = 0; i <= n; i++){
-		if(i == 0){
 			fr1 << std::right << std::setw(23) << "Islaike" << std::endl; 
 			fr1 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
 			fr1 <<std::endl;
 		    fr2 << std::right << std::setw(23) << "Neislaike" << std::endl; 
 		    fr2 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
 			fr2 <<std::endl;
-		}
-		else{
 
-		if(StudentuInfo[i].egzGal >= 5)	islaike.push_back(StudentuInfo[i]);
-		if(StudentuInfo[i].egzGal < 5) neislaike.push_back(StudentuInfo[i]);
-	}
-	}
+StudentuInfo.erase(StudentuInfo.begin());
+ auto it = std::copy_if (StudentuInfo.begin(), StudentuInfo.end(), neislaike.begin(), [](const Studentai & i){return i.egzGal <5;} );
+	neislaike.resize(std::distance(neislaike.begin(),it));
+ auto it1 = std::copy_if (StudentuInfo.begin(), StudentuInfo.end(), islaike.begin(), [](const Studentai & f){return f.egzGal >=5;} );
+	islaike.resize(std::distance(islaike.begin(),it1));	
+	
+		
 	int dydis1 = islaike.size();
 	int dydis2 = neislaike.size();
 	for(int j = 0; j< dydis1; j++){
@@ -226,7 +225,7 @@ void VectorRusiavimas2strat(std::vector<Studentai> StudentuInfo, int n){
 	ss << n;
 	std::string pav1= ss.str() +"islaike.txt";
 	std::string pav2= ss.str()+ "neislaike.txt";
-	std::vector<Studentai> neislaike;
+	std::vector<Studentai> neislaike (StudentuInfo.size());
 	std::ofstream fr1(pav1);
 	std::ofstream fr2(pav2);
 			fr1 << std::right << std::setw(23) << "Islaike" << std::endl; 
@@ -235,26 +234,9 @@ void VectorRusiavimas2strat(std::vector<Studentai> StudentuInfo, int n){
 		    fr2 << std::right << std::setw(23) << "Neislaike" << std::endl; 
 		    fr2 << std::left << std::setw(13) << "Pavarde" << std::left  << std::setw(13) << "Vardas" << std::left << std::setw(7) << "Galutinis balas" << std::endl;
 			fr2 <<std::endl;
-	 
-
 	 StudentuInfo.erase(StudentuInfo.begin());
-std::vector<Studentai>::iterator it =StudentuInfo.begin();
-while(it != StudentuInfo.end()){
-		if(it->egzGal < 5){
-			if(it->fname == "") break;
-			 neislaike.push_back(*it);
-}
-
-it++;
-	}
-	std::vector<Studentai>::iterator iter; 
-	std::vector<Studentai>::iterator it1;
-//	while(it1 !=iter ){
-//		it1 = iter;
-//		iter = std::find_if(iter, StudentuInfo.end(), maziau); 
-//		StudentuInfo.erase(iter);
-
-//}
+auto it = std::copy_if (StudentuInfo.begin(), StudentuInfo.end(), neislaike.begin(), [](const Studentai & i){return i.egzGal <5;} );
+	neislaike.resize(std::distance(neislaike.begin(),it));
   StudentuInfo.erase(std::remove_if(StudentuInfo.begin(), StudentuInfo.end(), maziau), StudentuInfo.end());
 	StudentuInfo.shrink_to_fit();
 	neislaike.shrink_to_fit();
