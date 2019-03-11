@@ -205,6 +205,7 @@ void VectorRusiavimas1strat(std::vector<Studentai> StudentuInfo, int n){
 			fr2 <<std::endl;
 		}
 		else{
+
 		if(StudentuInfo[i].egzGal >= 5)	islaike.push_back(StudentuInfo[i]);
 		if(StudentuInfo[i].egzGal < 5) neislaike.push_back(StudentuInfo[i]);
 	}
@@ -246,19 +247,20 @@ while(it != StudentuInfo.end()){
 
 it++;
 	}
-	std::vector<Studentai>::iterator it1 =StudentuInfo.begin();
-	while(it1 !=StudentuInfo.end()){
-		if(it1->egzGal <5){
-			if(it1->fname == "") break;
-		    it1 = StudentuInfo.erase(it1);
-		}	
-		else it1++;
-}
+	std::vector<Studentai>::iterator iter; 
+	std::vector<Studentai>::iterator it1;
+//	while(it1 !=iter ){
+//		it1 = iter;
+//		iter = std::find_if(iter, StudentuInfo.end(), maziau); 
+//		StudentuInfo.erase(iter);
+
+//}
+  StudentuInfo.erase(std::remove_if(StudentuInfo.begin(), StudentuInfo.end(), maziau), StudentuInfo.end());
 	StudentuInfo.shrink_to_fit();
 	neislaike.shrink_to_fit();
 	int dydis1 = StudentuInfo.size();
 	int dydis2 = neislaike.size();
-	for(int j = 0; j< dydis1; j++){
+	for(int j = 0; j < dydis1; j++){
 		fr1 << std::left << std::setw(13) << StudentuInfo[j].lname << std::left << std::setw(13) << StudentuInfo[j].fname << std::left << std::setw(7) << StudentuInfo[j].egzGal << std::endl;
 	}
 		for(int j1 = 0; j1< dydis2; j1++){
@@ -267,5 +269,9 @@ it++;
 	fr1.close();
 	fr2.close();
 }
+bool maziau(const Studentai & i)
+{ 
+    return i.egzGal < 5; 
+} 
 
 

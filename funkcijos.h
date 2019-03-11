@@ -38,5 +38,5 @@ void DequeRusiavimas2strat(std::deque<Studentai> StudentuInfo, int n);
 void vector();
 void list();
 void deque();
-
+bool maziau(const Studentai &i);
 #endif
